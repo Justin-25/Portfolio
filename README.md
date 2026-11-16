@@ -1,5 +1,7 @@
 # Justin Mandia: Portfolio
 
+**Live: [justin-mandia.vercel.app](https://justin-mandia.vercel.app)**
+
 My personal portfolio site: who I am, the projects I've built, and a way to get in touch.
 I'm a full-stack developer and a 2025 Computer Science graduate from Malvar, Philippines,
 open to full-stack and frontend roles, on-site or remote.
@@ -18,9 +20,8 @@ I'm building it in small steps, each one tested before it's committed.
 - [x] **3. Contact form**: sends to my email (Web3Forms), inline errors, a confirmation modal,
       and a certificate viewer for my courses
 - [x] **4. GitHub activity**: my contribution graph for the last 12 months in the footer
-- [ ] **5. Launch**: motion, accessibility pass, deploy on Vercel
-
-The live link will be added here after step 5.
+- [x] **5. Launch**: motion, accessibility pass (axe + keyboard tests), link previews,
+      deployed on Vercel
 
 ## Tech stack
 
@@ -32,7 +33,8 @@ The live link will be added here after step 5.
 | Fonts | Geist and Geist Mono, served by the site itself (Fontsource) |
 | Icons | react-icons (Lucide, plus Font Awesome for brand logos) |
 | Tests | Playwright end-to-end tests at desktop and phone sizes, ESLint |
-| Hosting | Vercel (planned) |
+| Hosting | Vercel: every push to `main` deploys the site |
+| AI tools | Claude Pro and Claude Code, with every change reviewed and tested |
 
 ## Running locally
 

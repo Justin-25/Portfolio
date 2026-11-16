@@ -21,7 +21,12 @@ Keep it small (about 1–2 days of work): content over polish.
   (page "Web Design": Desktop 1440, Phone 390, States & notes; page "Components"). Design first,
   then I approve it, then code.
 
-## Build plan (design approved 2026-11-16); I commit after each task
+## Live
+https://justin-mandia.vercel.app: Vercel project "justin-mandia", deploys on every push to `main`.
+`VITE_WEB3FORMS_ACCESS_KEY` is set in the Vercel project settings (and in `.env.local` locally).
+The link-preview tags in `index.html` use this address; update them if the address ever changes.
+
+## Build plan (design approved 2026-11-16, all five tasks done and live 2026-11-16)
 1. Setup & page shell: Vite + React + Tailwind, Geist fonts, Figma tokens, nav + phone menu,
    empty sections, footer bar, Playwright (desktop 1440 + phone 390).
 2. Content: Hero, Projects, About & skills, Education & courses, grid background + cursor spotlight.
