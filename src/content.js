@@ -137,8 +137,9 @@ export const githubActivity = {
   source: "Live from GitHub · updates daily",
 };
 
-// Newest first. "View certificate" opens `certificate` (an image in src/assets/certificates)
-// in a pop-up, with a button to `certificateUrl`, Udemy's own page for the certificate.
+// Newest first. A single date uses `date` (shown) + `dateTime` (for machines); a span of years
+// uses `start` and `end`. "View certificate" opens `certificate` (an image in
+// src/assets/certificates) in a pop-up, with a button to `certificateUrl`, Udemy's own page.
 export const education = [
   {
     kind: "course",
@@ -160,8 +161,8 @@ export const education = [
   },
   {
     kind: "degree",
-    date: "2025",
-    dateTime: "2025",
+    start: "2022",
+    end: "2025",
     title: "Bachelor of Science in Computer Science",
     meta: "Tanauan Institute",
   },

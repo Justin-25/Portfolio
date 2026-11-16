@@ -130,6 +130,13 @@ test("education: two Udemy courses with a 'View certificate' button, then the de
   );
   await expect(items.nth(2)).toContainText("Bachelor of Science in Computer Science");
   await expect(items.nth(2)).toContainText("Tanauan Institute");
+  await expect(items.nth(2)).toContainText("2022 – 2025");
+  // the years are two machine-readable dates, on one line
+  await expect(items.nth(2).locator("time")).toHaveCount(2);
+  await expect(items.nth(2).locator("time").first()).toHaveAttribute("datetime", "2022");
+  await expect(items.nth(2).locator("time").last()).toHaveAttribute("datetime", "2025");
+  const range = items.nth(2).locator("time").first().locator("..");
+  expect((await range.boundingBox()).height).toBeLessThanOrEqual(16); // Mono/S line height: no wrapping
   await expect(items.nth(2).getByRole("button")).toHaveCount(0);
 });
 

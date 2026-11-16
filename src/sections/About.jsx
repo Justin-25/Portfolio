@@ -27,6 +27,22 @@ function Highlighted({ text, highlight }) {
   );
 }
 
+// The item's date: one <time>, or two for a span of years ("2022 – 2025")
+function ItemDate({ item, className }) {
+  if (item.start) {
+    return (
+      <span className={className}>
+        <time dateTime={item.start}>{item.start}</time> – <time dateTime={item.end}>{item.end}</time>
+      </span>
+    );
+  }
+  return (
+    <time dateTime={item.dateTime} className={className}>
+      {item.date}
+    </time>
+  );
+}
+
 // Figma "Education item". Phone: icon and date on top, then title, meta, link.
 // From 768px: one row (date, icon, title and meta, link).
 function EducationItem({ item, index, onViewCertificate }) {
@@ -42,9 +58,10 @@ function EducationItem({ item, index, onViewCertificate }) {
           size="size-9 md:size-11"
           className="md:order-2"
         />
-        <time dateTime={item.dateTime} className="font-mono text-mono-s text-muted md:order-1 md:w-22 md:shrink-0">
-          {item.date}
-        </time>
+        <ItemDate
+          item={item}
+          className="font-mono text-mono-s whitespace-nowrap text-muted md:order-1 md:w-22 md:shrink-0"
+        />
       </div>
       <div className="min-w-0 space-y-1 md:order-3 md:flex-1">
         <p className="text-heading-s text-primary">{item.title}</p>
