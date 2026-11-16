@@ -31,5 +31,7 @@ export default defineConfig({
     command: "npm run dev",
     url: "http://localhost:5174",
     reuseExistingServer: true,
+    // A placeholder key: the tests fake Web3Forms, so no test ever sends a real email
+    env: { VITE_WEB3FORMS_ACCESS_KEY: "test-access-key" },
   },
 });

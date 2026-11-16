@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 
 // Task 1: the page shell. Runs at desktop (1440) and phone (390) sizes, see playwright.config.js.
 
@@ -53,11 +53,11 @@ test("uses the Geist font from the design", async ({ page }) => {
 });
 
 test("fits the screen without sideways scrolling", async ({ page }) => {
-  const { scrollWidth, innerWidth } = await page.evaluate(() => ({
-    scrollWidth: document.documentElement.scrollWidth,
-    innerWidth: window.innerWidth,
-  }));
-  expect(scrollWidth, `page is ${scrollWidth}px wide on a ${innerWidth}px screen`).toBeLessThanOrEqual(innerWidth);
+  // Compare with the real screen width: a phone browser widens the page to fit anything that
+  // sticks out, so comparing with window.innerWidth would hide the problem.
+  const screen = page.viewportSize().width;
+  const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+  expect(scrollWidth, `page is ${scrollWidth}px wide on a ${screen}px screen`).toBeLessThanOrEqual(screen);
 });
 
 test("a shared link to a section (/#about) opens at that section", async ({ page }) => {
@@ -67,7 +67,7 @@ test("a shared link to a section (/#about) opens at that section", async ({ page
 
 test("footer links point to GitHub and email", async ({ page }) => {
   const footer = page.getByRole("contentinfo");
-  const github = footer.getByRole("link", { name: "GitHub" });
+  const github = footer.getByRole("link", { name: "GitHub", exact: true });
   await expect(github).toHaveAttribute("href", "https://github.com/Justin-25");
   await expect(github).toHaveAttribute("target", "_blank");
   await expect(github).toHaveAttribute("rel", "noreferrer");

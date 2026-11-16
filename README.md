@@ -15,8 +15,9 @@ I'm building it in small steps, each one tested before it's committed.
 - [x] **1. Page shell**: sticky nav, phone menu, section anchors, footer bar
 - [x] **2. Content**: hero, projects, about & skills, education & courses, grid background
       with a spotlight that follows the cursor
-- [ ] **3. Contact form**: sends to my email (Web3Forms), inline errors, a confirmation modal
-- [ ] **4. GitHub activity**: my contribution graph for the last 12 months in the footer
+- [x] **3. Contact form**: sends to my email (Web3Forms), inline errors, a confirmation modal,
+      and a certificate viewer for my courses
+- [x] **4. GitHub activity**: my contribution graph for the last 12 months in the footer
 - [ ] **5. Launch**: motion, accessibility pass, deploy on Vercel
 
 The live link will be added here after step 5.
@@ -39,8 +40,14 @@ You need Node.js 22.12 or newer.
 
 ```
 npm install
-npm run dev        # site on http://localhost:5174
+cp .env.example .env.local   # then paste your Web3Forms access key into .env.local
+npm run dev                  # site on http://localhost:5174
 ```
+
+The contact form sends messages through [Web3Forms](https://web3forms.com). Its free access key
+goes in `.env.local` as `VITE_WEB3FORMS_ACCESS_KEY` (never committed); on Vercel, set the same
+variable in the project settings. Without a key, the page still works, but sending a message
+shows "Message not sent".
 
 | Command | What it does |
 |---|---|
@@ -48,7 +55,7 @@ npm run dev        # site on http://localhost:5174
 | `npm run build` | production build in `dist/` |
 | `npm run preview` | serves the production build on http://localhost:4174 |
 | `npm run lint` | ESLint |
-| `npm run test:e2e` | Playwright tests at 1440px and 390px (starts the dev server if needed) |
+| `npm run test:e2e` | Playwright tests at 1440px and 390px (starts the dev server if needed). They run without live services: GitHub data comes from a saved sample and Web3Forms is faked, so no test sends a real email |
 
 The first time you run the tests, download Playwright's browser with
 `npx playwright install chromium`.
@@ -72,11 +79,14 @@ src/
 ├── content.js       # all text and links on the page
 ├── index.css        # design tokens (colours, text styles) and shared CSS utilities
 ├── App.jsx          # page layout: background, nav, sections, footer
-├── assets/          # photo and project screenshot (WebP, resized for 2x screens)
-├── components/      # Nav, MobileMenu, Background (grid + cursor spotlight), Badge,
-│                    # TagList, IconBox, SocialLinks, SectionHeading, Footer, ui.js (button styles)
+├── assets/          # photo, project screenshot and course certificates (WebP)
+├── components/      # Nav, MobileMenu, Background (grid + cursor spotlight), Modal (shared),
+│                    # ContactForm, Field, GitHubActivity, Badge, TagList, IconBox, SocialLinks,
+│                    # SectionHeading, Footer, ui.js (button styles)
+├── lib/             # sendMessage.js (Web3Forms), contributions.js (GitHub contribution data)
 └── sections/        # Hero, Projects, About (with education & courses), Contact
-e2e/                 # Playwright tests
+e2e/                 # Playwright tests; fixtures.js keeps them off live services,
+                     # data/contributions.json is the saved GitHub sample
 public/              # favicon
 ```
 
@@ -85,9 +95,12 @@ public/              # favicon
 - **Tokens match Figma.** Colour names in code are the Figma variable names (`bg`, `surface`,
   `border`, `primary` / `secondary` / `muted` text), and text classes are the Figma text
   styles (`text-display-xl`, `text-heading-m`, `text-body-s`, `eyebrow`…).
-- **Keyboard friendly.** A "Skip to content" link appears on the first Tab. The phone menu is
-  a native `<dialog>`: it keeps focus inside, closes with Esc, and returns focus to the menu
-  button.
+- **Keyboard friendly.** A "Skip to content" link appears on the first Tab. The phone menu and
+  the shared Modal are native `<dialog>`s: they keep focus inside, close with Esc, and return
+  focus to whatever opened them.
+- **Helpful form.** Errors appear under their field and are read out by screen readers; the
+  cursor jumps to the first one. The result of sending (sent / not sent, with "Try again")
+  opens the shared Modal. A hidden honeypot field quietly drops messages from spam bots.
 - **Calm motion.** In-page links glide to their section, and everything moves instantly
   instead when the visitor's system asks for reduced motion.
 - **Cursor spotlight.** A soft light follows the mouse and brightens the background grid. It
@@ -95,6 +108,10 @@ public/              # favicon
   motion is on, the page shows a still glow instead.
 - **Light images.** Photos are WebP, sized for sharp screens, and load only when needed, so a
   phone never downloads the large desktop photo.
+- **Live GitHub graph.** The footer loads my contributions from a free public API
+  ([github-contributions-api](https://github.com/grubersjoe/github-contributions-api)). Screen
+  readers hear one summary instead of 366 squares; hovering a square shows its date and count.
+  If the data can't load, the card links to my GitHub profile instead.
 
 ## Contact
 

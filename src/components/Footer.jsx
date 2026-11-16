@@ -1,12 +1,14 @@
 import { navLinks, profile } from "../content";
+import GitHubActivity from "./GitHubActivity";
 import SocialLinks from "./SocialLinks";
 
-// Footer bottom bar. The GitHub activity graph is added above it in Task 4.
+// Footer (Figma "Footer"): my GitHub activity, then the bottom bar (©, links, icons).
 export default function Footer() {
   return (
     <footer className="border-t border-border">
-      <div className="page-container py-8 md:py-10">
-        <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+      <div className="page-container space-y-10 pt-14 pb-8 md:space-y-14 md:pt-18 md:pb-10">
+        <GitHubActivity />
+        <div className="flex flex-col gap-5 border-t border-border pt-6 md:flex-row md:items-center md:justify-between">
           <p className="order-3 text-body-s text-muted md:order-1">
             © {new Date().getFullYear()} {profile.name}
           </p>

@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 
 // Task 2: hero, projects, about & skills, education & courses, background spotlight.
 // Runs at desktop (1440) and phone (390) sizes, see playwright.config.js.
@@ -75,40 +75,41 @@ test("projects: Tooth Fairy card with its links, and the e-commerce card", async
   );
 });
 
-test("about: bio, motto and the four skill groups", async ({ page }) => {
+test("about: bio, motto and the five skill groups, including AI tools", async ({ page }) => {
   const section = page.locator("#about");
   await expect(section.getByText(/2025 Computer Science graduate from Malvar/)).toBeVisible();
   await expect(section.getByText(/open to full-stack and frontend roles/)).toBeVisible();
+  await expect(
+    section.getByText("I use AI tools like Claude to build faster, and I review and test everything before it ships.", { exact: false }),
+  ).toBeVisible();
   await expect(section.getByText("Keep learning. Keep growing.", { exact: false })).toBeVisible();
   await expect(section.getByRole("heading", { level: 3 })).toHaveText([
-    "Frontend", "Backend", "Databases", "Testing & tools", "Education & courses",
+    "Frontend", "Backend", "Databases", "Testing & tools", "AI tools", "Education & courses",
   ]);
   await expect(section.getByRole("list", { name: "Backend skills" }).getByRole("listitem")).toHaveText([
     "Node.js", "Express", "REST APIs", "JWT auth",
   ]);
+  await expect(section.getByRole("list", { name: "AI tools skills" }).getByRole("listitem")).toHaveText([
+    "Claude Pro", "Claude Code",
+  ]);
 });
 
-test("education: two Udemy courses with certificate links, then the degree", async ({ page }) => {
+test("education: two Udemy courses with a 'View certificate' button, then the degree", async ({ page }) => {
   const items = page.locator("#about ol > li");
   await expect(items).toHaveCount(3);
   await expect(items.nth(0)).toContainText("Node.js, Express, MongoDB & More: The Complete Bootcamp");
   await expect(items.nth(0)).toContainText("Aug 2026");
-  await expect(items.nth(0).getByRole("link", { name: /^View certificate/ })).toHaveAttribute(
-    "href",
-    "https://www.udemy.com/certificate/UC-43349306-f7b0-4b64-afaa-e37d82cb9f51/",
-  );
   await expect(items.nth(1)).toContainText("The Complete Full-Stack Web Development Bootcamp");
-  await expect(items.nth(1).getByRole("link", { name: /^View certificate/ })).toHaveAttribute(
-    "href",
-    "https://www.udemy.com/certificate/UC-abd3149f-d71f-4b37-8133-9954b1c39509/",
-  );
-  // each certificate link says which course it belongs to (for screen readers)
-  await expect(items.nth(1).getByRole("link")).toHaveAccessibleName(
+  // each button says which course it belongs to (for screen readers)
+  for (const i of [0, 1]) {
+    await expect(items.nth(i).getByRole("button", { name: /^View certificate: / })).toBeVisible();
+  }
+  await expect(items.nth(1).getByRole("button")).toHaveAccessibleName(
     "View certificate: The Complete Full-Stack Web Development Bootcamp",
   );
   await expect(items.nth(2)).toContainText("Bachelor of Science in Computer Science");
   await expect(items.nth(2)).toContainText("Tanauan Institute");
-  await expect(items.nth(2).getByRole("link")).toHaveCount(0);
+  await expect(items.nth(2).getByRole("button")).toHaveCount(0);
 });
 
 test("every image loads", async ({ page }) => {
@@ -117,11 +118,10 @@ test("every image loads", async ({ page }) => {
 
 test("fits the screen without sideways scrolling, top to bottom", async ({ page }) => {
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-  const { scrollWidth, innerWidth } = await page.evaluate(() => ({
-    scrollWidth: document.documentElement.scrollWidth,
-    innerWidth: window.innerWidth,
-  }));
-  expect(scrollWidth).toBeLessThanOrEqual(innerWidth);
+  // the real screen width (see the note in shell.spec.js)
+  const screen = page.viewportSize().width;
+  const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+  expect(scrollWidth, `page is ${scrollWidth}px wide on a ${screen}px screen`).toBeLessThanOrEqual(screen);
 });
 
 test.describe("background spotlight", () => {

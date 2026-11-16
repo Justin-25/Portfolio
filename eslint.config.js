@@ -19,8 +19,10 @@ export default defineConfig([
     },
   },
   {
-    // Playwright tests and config run in Node, not the browser
+    // Playwright tests and config run in Node, not the browser. Playwright's fixture function is
+    // called `use`, which the React hooks rule mistakes for a React hook, so it's off here.
     files: ["e2e/**/*.js", "playwright.config.js"],
     languageOptions: { globals: globals.node },
+    rules: { "react-hooks/rules-of-hooks": "off" },
   },
 ]);

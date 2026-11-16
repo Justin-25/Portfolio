@@ -43,6 +43,32 @@ export const sections = {
   },
 };
 
+export const contactForm = {
+  title: "Send a message",
+  subtitle: "I’ll reply to the email address you enter.",
+  privacy: "Your details are only used to reply to you.",
+  placeholders: {
+    name: "Your name",
+    email: "you@company.com",
+    message: "Tell me about the role or project…",
+  },
+  errors: {
+    name: "Please enter your name.",
+    emailMissing: "Please enter your email address.",
+    email: "Enter a valid email address.",
+    messageMissing: "Please write a message.",
+    message: "Please write at least 10 characters.",
+  },
+  sent: {
+    title: "Message sent",
+    body: "Thanks for reaching out! Your message is in my inbox and I’ll reply to the email address you entered.",
+  },
+  failed: {
+    title: "Message not sent",
+    body: "Something went wrong, so your message wasn’t sent. Please try again, or email me at",
+  },
+};
+
 // The first project is shown as the large featured card.
 export const projects = [
   {
@@ -82,7 +108,7 @@ export const bio = [
     highlight: "Tooth Fairy Dentistry",
   },
   {
-    text: "I care about readable code, secure defaults and interfaces that are easy to use. I’m open to full-stack and frontend roles, on-site or remote.",
+    text: "I care about readable code, secure defaults and interfaces that are easy to use. I use AI tools like Claude to build faster, and I review and test everything before it ships. I’m open to full-stack and frontend roles, on-site or remote.",
     highlight: "open to full-stack and frontend roles",
   },
 ];
@@ -100,9 +126,19 @@ export const skills = [
     group: "Testing & tools",
     items: ["Playwright", "Postman", "Git", "GitHub", "Vercel", "Render", "ESLint", "Figma"],
   },
+  { group: "AI tools", items: ["Claude Pro", "Claude Code"] },
 ];
 
-// Newest first. `certificateUrl` is Udemy's own verification page for the certificate.
+// Footer: my GitHub contributions for the last 12 months (loaded live, see lib/contributions.js)
+export const githubActivity = {
+  eyebrow: "GitHub activity",
+  loading: "Loading contributions…",
+  unavailable: "GitHub activity couldn’t load right now.",
+  source: "Live from GitHub · updates daily",
+};
+
+// Newest first. "View certificate" opens `certificate` (an image in src/assets/certificates)
+// in a pop-up, with a button to `certificateUrl`, Udemy's own page for the certificate.
 export const education = [
   {
     kind: "course",
@@ -110,6 +146,7 @@ export const education = [
     dateTime: "2026-08",
     title: "Node.js, Express, MongoDB & More: The Complete Bootcamp",
     meta: "Udemy · Jonas Schmedtmann · 42 hours",
+    certificate: "nodejs-bootcamp",
     certificateUrl: "https://www.udemy.com/certificate/UC-43349306-f7b0-4b64-afaa-e37d82cb9f51/",
   },
   {
@@ -118,6 +155,7 @@ export const education = [
     dateTime: "2026-07",
     title: "The Complete Full-Stack Web Development Bootcamp",
     meta: "Udemy · Dr. Angela Yu · 62 hours",
+    certificate: "fullstack-bootcamp",
     certificateUrl: "https://www.udemy.com/certificate/UC-abd3149f-d71f-4b37-8133-9954b1c39509/",
   },
   {

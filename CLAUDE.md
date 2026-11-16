@@ -26,7 +26,8 @@ Keep it small (about 1–2 days of work): content over polish.
    empty sections, footer bar, Playwright (desktop 1440 + phone 390).
 2. Content: Hero, Projects, About & skills, Education & courses, grid background + cursor spotlight.
 3. Contact: form, inline errors, "Sending…", Web3Forms, shared Modal (sent / not sent).
-4. Footer GitHub graph (data source still to confirm: recommended the free public contributions API).
+4. Footer GitHub graph, loaded live from the free public contributions API
+   (github-contributions-api.jogruber.de); "View on GitHub" link if it can't load.
 5. Motion, accessibility pass, deploy to Vercel.
 
 These rules carry over from the Tooth Fairy Dentistry project. Follow them every session.
