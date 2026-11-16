@@ -29,9 +29,30 @@ test("hero: badge, role, intro, buttons and location", async ({ page }) => {
   await expect(hero.getByText("Open to remote work")).toBeVisible();
   await expect(hero.getByRole("link", { name: "View projects" })).toHaveAttribute("href", "#projects");
   await expect(hero.getByRole("link", { name: "Contact me" })).toHaveAttribute("href", "#contact");
-  // not ready yet, so not shown
+  // no CV yet, so no button
   await expect(hero.getByRole("link", { name: "Download CV" })).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "LinkedIn" })).toHaveCount(0);
+});
+
+test("LinkedIn appears everywhere the design shows it", async ({ page, isMobile }) => {
+  const LINKEDIN = "https://www.linkedin.com/in/justin-mandia-9a006b450/";
+  const links = [
+    page.getByRole("contentinfo").getByRole("link", { name: "LinkedIn", exact: true }),
+    page.locator("#contact").getByRole("link", { name: /LinkedIn profile/ }),
+  ];
+  // the hero's icon buttons are desktop-only; on phones LinkedIn is in the menu instead
+  if (!isMobile) links.push(page.locator("#top").getByRole("link", { name: "LinkedIn" }));
+  for (const link of links) {
+    await expect(link).toHaveAttribute("href", LINKEDIN);
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", "noreferrer");
+  }
+  if (isMobile) {
+    await page.getByRole("button", { name: "Open menu" }).click();
+    await expect(page.getByRole("dialog", { name: "Menu" }).getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
+      "href",
+      LINKEDIN,
+    );
+  }
 });
 
 test("hero: shows one grayscale photo for this screen size", async ({ page, isMobile }) => {

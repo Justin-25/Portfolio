@@ -3,6 +3,7 @@ import { LuArrowUpRight, LuCheck, LuShoppingBag } from "react-icons/lu";
 import toothFairyHome from "../assets/tooth-fairy-home.webp";
 import Badge from "../components/Badge";
 import IconBox from "../components/IconBox";
+import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import TagList from "../components/TagList";
 import { buttonClass } from "../components/ui";
@@ -30,7 +31,7 @@ function BrowserFrame({ url, image, alt }) {
         width="1152"
         height="720"
         loading="lazy"
-        className="aspect-[16/10] w-full object-cover"
+        className="aspect-16/10 w-full object-cover"
       />
     </div>
   );
@@ -38,7 +39,7 @@ function BrowserFrame({ url, image, alt }) {
 
 function FeaturedProject({ project }) {
   return (
-    <article className="overflow-hidden rounded-2xl border border-border bg-surface lg:flex">
+    <article className="lift overflow-hidden rounded-2xl border border-border bg-surface lg:flex">
       <div className="flex items-center justify-center border-b border-border bg-surface-raised p-4 lg:w-160 lg:shrink-0 lg:border-r lg:border-b-0 lg:p-8">
         <BrowserFrame
           url={new URL(project.liveUrl).host}
@@ -80,7 +81,7 @@ function FeaturedProject({ project }) {
 // Dashed card for the project I'm building now (Figma "Project card / Currently building")
 function InProgressProject({ project }) {
   return (
-    <article className="flex flex-col gap-4 rounded-2xl border border-dashed border-border-strong bg-bg px-5 py-6 lg:flex-row lg:items-center lg:gap-6 lg:p-8">
+    <article className="lift flex flex-col gap-4 rounded-2xl border border-dashed border-border-strong bg-bg px-5 py-6 lg:flex-row lg:items-center lg:gap-6 lg:p-8">
       <div className="flex items-center gap-3 lg:contents">
         <IconBox icon={LuShoppingBag} size="size-11 lg:size-14" />
         <p className="eyebrow text-muted lg:hidden">Currently building</p>
@@ -107,9 +108,15 @@ export default function Projects() {
   return (
     <Section id="projects" labelledBy="projects-title">
       <div className="space-y-8 md:space-y-12">
-        <SectionHeading id="projects-title" {...sections.projects} />
-        <FeaturedProject project={featured} />
-        <InProgressProject project={inProgress} />
+        <Reveal>
+          <SectionHeading id="projects-title" {...sections.projects} />
+        </Reveal>
+        <Reveal>
+          <FeaturedProject project={featured} />
+        </Reveal>
+        <Reveal>
+          <InProgressProject project={inProgress} />
+        </Reveal>
       </div>
     </Section>
   );

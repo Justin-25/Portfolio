@@ -2,6 +2,8 @@ import { FaGithub, FaLinkedin } from "react-icons/fa6";
 import { LuMail, LuMapPin } from "react-icons/lu";
 import ContactForm from "../components/ContactForm";
 import IconBox from "../components/IconBox";
+import Reveal from "../components/Reveal";
+import { stagger } from "../components/ui";
 import { profile, sections } from "../content";
 import Section from "./Section";
 
@@ -48,7 +50,7 @@ export default function Contact() {
   return (
     <Section id="contact" labelledBy="contact-title">
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-20">
-        <div className="space-y-8 md:space-y-10">
+        <Reveal className="space-y-8 md:space-y-10">
           <div className="space-y-3 md:space-y-4">
             <p className="eyebrow text-muted">{eyebrow}</p>
             <h2 id="contact-title" className="text-heading-l text-primary md:text-display-l">
@@ -61,8 +63,10 @@ export default function Contact() {
               <ContactItem key={item.label} {...item} />
             ))}
           </ul>
-        </div>
-        <ContactForm />
+        </Reveal>
+        <Reveal delay={stagger(1)}>
+          <ContactForm />
+        </Reveal>
       </div>
     </Section>
   );

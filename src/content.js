@@ -13,8 +13,8 @@ export const profile = {
   email: "justinmandia25@gmail.com",
   github: "https://github.com/Justin-25",
   githubHandle: "Justin-25",
-  // Not ready yet. Set these and the LinkedIn links / "Download CV" button appear automatically.
-  linkedin: null,
+  linkedin: "https://www.linkedin.com/in/justin-mandia-9a006b450/",
+  // Not ready yet. Set it and the "Download CV" button appears automatically.
   cv: null,
 };
 

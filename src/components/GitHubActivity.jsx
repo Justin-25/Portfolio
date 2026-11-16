@@ -49,7 +49,9 @@ function describe(day) {
 // Footer "GitHub activity" (Figma "Footer"): my contribution graph for the last 12 months.
 export default function GitHubActivity() {
   const [state, setState] = useState({ status: "loading" });
+  const [scrollable, setScrollable] = useState(false);
   const scrollRef = useRef(null);
+  const pinnedToEnd = useRef(true); // stays true until the visitor scrolls back themselves
 
   useEffect(() => {
     let cancelled = false;
@@ -70,11 +72,25 @@ export default function GitHubActivity() {
     };
   }, []);
 
-  // Where the graph is wider than the screen (phones), it scrolls sideways: show the newest weeks first
+  // Where the graph is wider than the screen (phones), it scrolls sideways and shows the newest
+  // weeks first. Sizes can still change after that (e.g. when the web font arrives), so it re-pins
+  // to the newest week on every size change, unless the visitor has scrolled back themselves.
   useLayoutEffect(() => {
     const scroller = scrollRef.current;
-    if (scroller) scroller.scrollLeft = scroller.scrollWidth;
-  }, [state]);
+    if (!scroller) return;
+    const observer = new ResizeObserver(() => {
+      if (pinnedToEnd.current) scroller.scrollLeft = scroller.scrollWidth;
+      setScrollable(scroller.scrollWidth > scroller.clientWidth + 1);
+    });
+    observer.observe(scroller);
+    observer.observe(scroller.firstElementChild);
+    return () => observer.disconnect();
+  }, [state.status]);
+
+  function handleScroll(e) {
+    const { scrollLeft, clientWidth, scrollWidth } = e.currentTarget;
+    pinnedToEnd.current = scrollLeft + clientWidth >= scrollWidth - 4;
+  }
 
   const ready = state.status === "ready";
   const weeks = ready ? toWeeks(state.days) : PLACEHOLDER_WEEKS;
@@ -136,7 +152,16 @@ export default function GitHubActivity() {
                   </span>
                 ))}
               </div>
-              <div ref={scrollRef} data-testid="contribution-scroller" className="min-w-0 overflow-x-auto scrollbar-thin">
+              {/* When it scrolls, keyboard users can reach it and use the arrow keys */}
+              <div
+                ref={scrollRef}
+                onScroll={handleScroll}
+                data-testid="contribution-scroller"
+                tabIndex={scrollable ? 0 : undefined}
+                role={scrollable ? "region" : undefined}
+                aria-label={scrollable ? "Contribution graph, scroll sideways for older weeks" : undefined}
+                className="min-w-0 overflow-x-auto scrollbar-thin"
+              >
                 <div role="img" aria-label={summary} className="relative w-max pt-5 md:pt-6">
                   {months.map(({ index, name }) => (
                     <span

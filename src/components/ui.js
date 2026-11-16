@@ -15,5 +15,8 @@ export function buttonClass(variant = "primary", size = "md") {
   return `inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-colors duration-150 ease-soft ${BUTTON_SIZE[size]} ${BUTTON_VARIANT[variant]}`;
 }
 
+// Reveal delay for the n-th item of a list: 60ms apart, capped so long lists don't drag
+export const stagger = (index) => Math.min(index, 5) * 60;
+
 export const iconButtonClass =
   "inline-flex size-9 shrink-0 items-center justify-center rounded-lg border border-border-strong bg-bg text-primary transition-colors duration-150 ease-soft hover:border-border-hover hover:bg-surface-raised";

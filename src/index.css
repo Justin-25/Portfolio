@@ -149,6 +149,33 @@ html:has(dialog[open]) {
   }
 }
 
+/* Reveal on scroll (components/Reveal.jsx). The hidden state is only ever added by JavaScript. */
+[data-reveal] {
+  transition:
+    opacity 400ms var(--ease-soft),
+    transform 400ms var(--ease-soft);
+}
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+/* Card hover (Figma design notes): a 2px lift and a brighter border; no lift with reduced motion */
+@utility lift {
+  transition:
+    transform 200ms var(--ease-soft),
+    border-color 200ms var(--ease-soft);
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-border-hover);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
 /* Page width: 1200px of content with 24px side gutters (120px gutters at 1440) */
 @utility page-container {
   margin-inline: auto;
