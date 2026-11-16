@@ -76,7 +76,7 @@ test.describe("keyboard only", () => {
     await page.goto("/");
     const order = [
       "Skip to content", "Justin Mandia", "Projects", "About", "Contact", "GitHub", "Get in touch",
-      "View projects", "Contact me", "GitHub", "LinkedIn",
+      "View projects", "Contact me", "Download CV", "GitHub", "LinkedIn",
     ];
     for (const name of order) {
       await page.keyboard.press("Tab");

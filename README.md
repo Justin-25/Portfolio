@@ -71,8 +71,15 @@ without the tests ever reaching the wrong app.
 All text and links on the page live in one file, [`src/content.js`](src/content.js), so
 updating the bio, a link or a project never means editing components.
 
-Two links aren't ready yet. Setting `linkedin` or `cv` in `profile` makes the LinkedIn links
-or the "Download CV" button appear by themselves.
+**The CV.** "Download CV" serves [`public/Justin-Mandia-Resume.pdf`](public/Justin-Mandia-Resume.pdf):
+a public copy of my resume **without my phone number**, because anything on the site can be read
+by bots. The full version (with the phone number, for direct applications) stays off the site.
+When the resume changes:
+
+1. Update the full resume, then save a copy with the phone number removed.
+2. Export that copy as PDF, replace `public/Justin-Mandia-Resume.pdf` (keep the file name), and
+   check it's one page.
+3. Commit and push; Vercel publishes it.
 
 ## Project structure
 
@@ -89,7 +96,7 @@ src/
 └── sections/        # Hero, Projects, About (with education & courses), Contact
 e2e/                 # Playwright tests; fixtures.js keeps them off live services,
                      # data/contributions.json is the saved GitHub sample
-public/              # favicon
+public/              # favicon, iPhone icon, link-preview image, public CV (PDF)
 ```
 
 ## Design and accessibility

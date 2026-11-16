@@ -29,8 +29,32 @@ test("hero: badge, role, intro, buttons and location", async ({ page }) => {
   await expect(hero.getByText("Open to remote work")).toBeVisible();
   await expect(hero.getByRole("link", { name: "View projects" })).toHaveAttribute("href", "#projects");
   await expect(hero.getByRole("link", { name: "Contact me" })).toHaveAttribute("href", "#contact");
-  // no CV yet, so no button
-  await expect(hero.getByRole("link", { name: "Download CV" })).toHaveCount(0);
+});
+
+test("'Download CV' downloads the public resume PDF", async ({ page, isMobile }) => {
+  const cv = page.locator("#top").getByRole("link", { name: "Download CV" });
+  await expect(cv).toBeVisible();
+  await expect(cv).toHaveAttribute("href", "/Justin-Mandia-Resume.pdf");
+  await expect(cv).toHaveAttribute("download", "");
+
+  // phones: a full-width row under "View projects" and "Contact me"
+  if (isMobile) {
+    const [cvBox, viewBox] = await Promise.all([cv.boundingBox(), page.getByRole("link", { name: "View projects" }).boundingBox()]);
+    expect(cvBox.y).toBeGreaterThan(viewBox.y + viewBox.height);
+    expect(cvBox.width).toBeCloseTo(page.viewportSize().width - 48, 0);
+  }
+
+  // clicking it really downloads the file, under a clear name
+  const [download] = await Promise.all([page.waitForEvent("download"), cv.click()]);
+  expect(download.suggestedFilename()).toBe("Justin-Mandia-Resume.pdf");
+
+  // the server sends a real one-page PDF
+  const response = await page.request.get("/Justin-Mandia-Resume.pdf");
+  expect(response.status()).toBe(200);
+  expect(response.headers()["content-type"]).toContain("application/pdf");
+  const body = await response.body();
+  expect(body.subarray(0, 5).toString()).toBe("%PDF-");
+  expect(body.toString("latin1").match(/\/Type\s*\/Page[^s]/g)).toHaveLength(1);
 });
 
 test("LinkedIn appears everywhere the design shows it", async ({ page, isMobile }) => {

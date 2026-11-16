@@ -12,7 +12,10 @@ Keep it small (about 1–2 days of work): content over polish.
   → Footer with my GitHub contribution graph.
 - **Contact (changed 2026-11-15):** links (email, LinkedIn, GitHub) plus a "Want to collaborate?
   Contact me." form that sends the message to my email via **Web3Forms** (no backend). Public email:
-  **justinmandia25@gmail.com**. Download CV stays hidden until the PDF exists.
+  **justinmandia25@gmail.com**.
+- **CV (2026-11-16):** "Download CV" serves `public/Justin-Mandia-Resume.pdf`, a public copy of my
+  resume WITHOUT my phone number. The full resume (with phone) is in
+  `Documents/Cert of Courses/RESUME-JustinMandia.docx/.pdf` and never goes on the site. Keep both in sync.
 - **Currently building card:** my e-commerce repo (https://github.com/Justin-25/E-commerce-FullStack-project),
   described with its real progress (JWT login with refresh-token rotation, MongoDB Atlas, Redis).
 - **Look:** Vercel-like black and white (dark), Geist + Geist Mono, grayscale photo, a fixed grid

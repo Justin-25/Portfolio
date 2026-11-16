@@ -14,8 +14,8 @@ export const profile = {
   github: "https://github.com/Justin-25",
   githubHandle: "Justin-25",
   linkedin: "https://www.linkedin.com/in/justin-mandia-9a006b450/",
-  // Not ready yet. Set it and the "Download CV" button appears automatically.
-  cv: null,
+  // A public copy of my resume without my phone number (see README "Changing the content")
+  cv: "/Justin-Mandia-Resume.pdf",
 };
 
 export const navLinks = [
