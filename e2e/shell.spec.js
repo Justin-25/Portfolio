@@ -60,6 +60,11 @@ test("fits the screen without sideways scrolling", async ({ page }) => {
   expect(scrollWidth, `page is ${scrollWidth}px wide on a ${innerWidth}px screen`).toBeLessThanOrEqual(innerWidth);
 });
 
+test("a shared link to a section (/#about) opens at that section", async ({ page }) => {
+  await page.goto("/#about");
+  await expectLandedBelowNav(page, page.getByRole("heading", { level: 2, name: "About me" }));
+});
+
 test("footer links point to GitHub and email", async ({ page }) => {
   const footer = page.getByRole("contentinfo");
   const github = footer.getByRole("link", { name: "GitHub" });

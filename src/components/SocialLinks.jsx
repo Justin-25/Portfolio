@@ -4,12 +4,13 @@ import { profile } from "../content";
 import { iconButtonClass } from "./ui";
 
 // GitHub, LinkedIn (only once its URL is set in content.js) and email, as icon buttons.
-export default function SocialLinks({ className = "" }) {
+// `only` picks a subset by key, e.g. ["github", "linkedin"] in the hero.
+export default function SocialLinks({ className = "", only }) {
   const links = [
-    { href: profile.github, label: "GitHub", Icon: FaGithub, external: true },
-    profile.linkedin && { href: profile.linkedin, label: "LinkedIn", Icon: FaLinkedin, external: true },
-    { href: `mailto:${profile.email}`, label: "Email", Icon: LuMail },
-  ].filter(Boolean);
+    { key: "github", href: profile.github, label: "GitHub", Icon: FaGithub, external: true },
+    profile.linkedin && { key: "linkedin", href: profile.linkedin, label: "LinkedIn", Icon: FaLinkedin, external: true },
+    { key: "email", href: `mailto:${profile.email}`, label: "Email", Icon: LuMail },
+  ].filter((link) => link && (!only || only.includes(link.key)));
 
   return (
     <ul className={`flex items-center gap-2 ${className}`}>

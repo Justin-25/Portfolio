@@ -13,7 +13,7 @@ Vercel, and the page was designed in Figma first at desktop (1440px) and phone (
 I'm building it in small steps, each one tested before it's committed.
 
 - [x] **1. Page shell**: sticky nav, phone menu, section anchors, footer bar
-- [ ] **2. Content**: hero, projects, about & skills, education & courses, grid background
+- [x] **2. Content**: hero, projects, about & skills, education & courses, grid background
       with a spotlight that follows the cursor
 - [ ] **3. Contact form**: sends to my email (Web3Forms), inline errors, a confirmation modal
 - [ ] **4. GitHub activity**: my contribution graph for the last 12 months in the footer
@@ -71,10 +71,11 @@ or the "Download CV" button appear by themselves.
 src/
 ├── content.js       # all text and links on the page
 ├── index.css        # design tokens (colours, text styles) and shared CSS utilities
-├── App.jsx          # page layout: nav, sections, footer
-├── components/      # Nav, MobileMenu, Logo, SocialLinks, SectionHeading, Footer,
-│                    # and ui.js (button styles)
-└── sections/        # Hero, Projects, About, Contact
+├── App.jsx          # page layout: background, nav, sections, footer
+├── assets/          # photo and project screenshot (WebP, resized for 2x screens)
+├── components/      # Nav, MobileMenu, Background (grid + cursor spotlight), Badge,
+│                    # TagList, IconBox, SocialLinks, SectionHeading, Footer, ui.js (button styles)
+└── sections/        # Hero, Projects, About (with education & courses), Contact
 e2e/                 # Playwright tests
 public/              # favicon
 ```
@@ -89,6 +90,11 @@ public/              # favicon
   button.
 - **Calm motion.** In-page links glide to their section, and everything moves instantly
   instead when the visitor's system asks for reduced motion.
+- **Cursor spotlight.** A soft light follows the mouse and brightens the background grid. It
+  moves with CSS transforms only, so scrolling stays smooth. On touch screens, and when reduced
+  motion is on, the page shows a still glow instead.
+- **Light images.** Photos are WebP, sized for sharp screens, and load only when needed, so a
+  phone never downloads the large desktop photo.
 
 ## Contact
 

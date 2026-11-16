@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import Background from "./components/Background";
 import Footer from "./components/Footer";
 import Nav from "./components/Nav";
 import About from "./sections/About";
@@ -6,6 +8,16 @@ import Hero from "./sections/Hero";
 import Projects from "./sections/Projects";
 
 export default function App() {
+  // A shared link like /#contact: the browser looks for #contact before React has drawn the
+  // page, finds nothing and stays at the top. So once the page and fonts are ready, go there.
+  useEffect(() => {
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (!id) return;
+    document.fonts.ready.then(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "instant" });
+    });
+  }, []);
+
   return (
     <>
       {/* Hidden until focused with Tab: lets keyboard users jump past the nav */}
@@ -15,6 +27,7 @@ export default function App() {
       >
         Skip to content
       </a>
+      <Background />
       <Nav />
       <main id="main">
         <Hero />

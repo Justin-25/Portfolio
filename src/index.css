@@ -76,8 +76,10 @@
     background-color: var(--color-bg);
     color-scheme: dark;
   }
+  /* No background on body: the black comes from html, so the fixed grid layer
+     (z-index -10, see Background.jsx) can show through behind the page. */
   body {
-    @apply bg-bg font-sans text-primary antialiased;
+    @apply font-sans text-primary antialiased;
   }
   ::selection {
     background-color: var(--color-primary);
@@ -109,6 +111,42 @@ html:has(dialog[open]) {
   letter-spacing: 0.06em;
   font-weight: 500;
   text-transform: uppercase;
+}
+
+/* Background grid (Figma: 60px squares, white at 4%; 57px on phones so lines meet the 24px
+   gutters). Anchored to the top-left, so the faint and the bright copy always line up. */
+@utility bg-grid {
+  --grid-size: 57px;
+  --grid-line: rgb(255 255 255 / 0.04);
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  background-position: 24px 0;
+  @media (width >= 48rem) {
+    --grid-size: 60px;
+    background-position: 0 0;
+  }
+}
+@utility bg-grid-bright {
+  --grid-line: rgb(255 255 255 / 0.22);
+}
+
+/* The cursor spotlight only exists with a mouse and when motion is welcome;
+   everyone else gets a still glow at the top of the page instead. */
+.spotlight {
+  display: none;
+}
+.spotlight-glide {
+  transition: transform 150ms var(--ease-soft);
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .spotlight {
+    display: block;
+  }
+  .static-glow {
+    display: none;
+  }
 }
 
 /* Page width: 1200px of content with 24px side gutters (120px gutters at 1440) */
