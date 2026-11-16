@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+/* Design tokens: the Figma file's Color variables and text styles, under the same names.
+   Figma text/primary, text/secondary, text/muted -> primary, secondary, muted
+   (so the classes read text-primary, text-secondary, text-muted). */
+@theme {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-bg: #000000;
+  --color-surface: #0a0a0a;
+  --color-surface-raised: #111111;
+  --color-border: #242424;
+  --color-border-strong: #3d3d3d;
+  --color-border-hover: #5c5c5c; /* hover only, not in Figma */
+  --color-primary: #ededed;
+  --color-secondary: #a1a1a1;
+  --color-muted: #7e7e7e;
+  --color-accent: #ffffff;
+  --color-accent-hover: #d6d6d6; /* hover only, not in Figma */
+  --color-on-accent: #000000;
+  --color-danger: #ff6166;
+  --color-contrib-0: #161616;
+  --color-contrib-1: #3a3a3a;
+  --color-contrib-2: #6e6e6e;
+  --color-contrib-3: #a8a8a8;
+  --color-contrib-4: #ededed;
+
+  /* Text styles: size / line height / letter spacing / weight, as in Figma */
+  --text-display-xl: 4.5rem;
+  --text-display-xl--line-height: 4.75rem;
+  --text-display-xl--letter-spacing: -0.04em;
+  --text-display-xl--font-weight: 600;
+  --text-display-l: 2.75rem;
+  --text-display-l--line-height: 3.25rem;
+  --text-display-l--letter-spacing: -0.03em;
+  --text-display-l--font-weight: 600;
+  --text-display-m: 2.5rem;
+  --text-display-m--line-height: 2.75rem;
+  --text-display-m--letter-spacing: -0.035em;
+  --text-display-m--font-weight: 600;
+  --text-heading-l: 2rem;
+  --text-heading-l--line-height: 2.5rem;
+  --text-heading-l--letter-spacing: -0.025em;
+  --text-heading-l--font-weight: 600;
+  --text-heading-m: 1.5rem;
+  --text-heading-m--line-height: 2rem;
+  --text-heading-m--letter-spacing: -0.02em;
+  --text-heading-m--font-weight: 600;
+  --text-heading-s: 1.125rem;
+  --text-heading-s--line-height: 1.625rem;
+  --text-heading-s--letter-spacing: -0.01em;
+  --text-heading-s--font-weight: 600;
+  --text-body-l: 1.125rem;
+  --text-body-l--line-height: 1.875rem;
+  --text-body-m: 1rem;
+  --text-body-m--line-height: 1.625rem;
+  --text-body-s: 0.875rem;
+  --text-body-s--line-height: 1.375rem;
+  --text-label-m: 0.875rem;
+  --text-label-m--line-height: 1.25rem;
+  --text-label-m--font-weight: 500;
+  --text-label-s: 0.8125rem;
+  --text-label-s--line-height: 1.125rem;
+  --text-label-s--font-weight: 500;
+  --text-mono-m: 0.875rem;
+  --text-mono-m--line-height: 1.25rem;
+  --text-mono-s: 0.75rem;
+  --text-mono-s--line-height: 1rem;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    background-color: var(--color-bg);
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-bg font-sans text-primary antialiased;
+  }
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-on-accent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+/* In-page links glide to their section, unless the visitor prefers less motion */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* While a dialog is open (menu or modal), the page behind it doesn't scroll */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+/* Figma "Mono/Eyebrow": small uppercase mono label above headings */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Page width: 1200px of content with 24px side gutters (120px gutters at 1440) */
+@utility page-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 78rem;
+  padding-inline: 1.5rem;
+}
+
+/* Dialogs (menu, modal) fade and rise in; @starting-style is their state on the first frame */
+@utility modal {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 200ms var(--ease-soft),
+    transform 200ms var(--ease-soft),
+    overlay 200ms allow-discrete,
+    display 200ms allow-discrete;
+  &[open] {
+    opacity: 1;
+    transform: none;
+    @starting-style {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  &::backdrop {
+    background: rgb(0 0 0 / 0.7);
+    opacity: 0;
+    transition:
+      opacity 200ms var(--ease-soft),
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
+  }
+  &[open]::backdrop {
+    opacity: 1;
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+    transition: none;
+    &::backdrop {
+      transition: none;
+    }
+  }
+}
